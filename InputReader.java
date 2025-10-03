@@ -11,27 +11,20 @@ import java.util.Scanner;
 public class InputReader
 {
     private Scanner reader;
-
-    /**
-     * Create a new InputReader that reads text from the text terminal.
-     */
+    
+    public HashSet<String> getInput() 
+    {
+    String input = "hello  problem"; // multiple spaces handled
+    String[] wordsArray = input.trim().split("\\s+"); // split by one or more spaces
+    HashSet<String> wordsSet = new HashSet<>();
+    for (String word : wordsArray) {
+            wordsSet.add(word.toLowerCase());
+        }
+    return wordsSet;
+    
+    }
     public InputReader()
     {
         reader = new Scanner(System.in);
-    }
-
-    /**
-     * Read a line of text from standard input (the text terminal),
-     * and return it as a String.
-     *
-     * @return  A String typed by the user.
-     */
-    public String getInput()
-    {
-        // print prompt
-        System.out.print("> ");         
-        String inputLine = reader.nextLine();
-
-        return inputLine;
     }
 }

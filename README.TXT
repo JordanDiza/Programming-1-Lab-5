@@ -42,7 +42,13 @@ public class MapTester
 }
 
 
-#33
 
 
-#34
+
+#34 HashSet: unique unordered, ArrayList: ordered duplicates allowed, index access
+
+#35 HashSet: unordered, duplicates removed; ArrayList: ordered, duplicates kept.
+
+#36 Multiple spaces can create empty words unless you split
+
+

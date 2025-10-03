@@ -1,62 +1,55 @@
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.Random;
+
 /**
  * This class implements a technical support system. It is the top level class 
  * in this project. The support system communicates via text input/output 
  * in the text terminal.
- * 
- * This class uses an object of class InputReader to read input from the user,
- * and an object of class Responder to generate responses. It contains a loop
- * that repeatedly reads input and generates output until the users wants to 
- * leave.
- * 
- * @author  Michael Kölling and David J. Barnes
- * @version 7.0
  */
 public class SupportSystem
 {
     private InputReader reader;
     private Responder responder;
     private HashMap<String, String> responses;
-    /**
-     * Creates a technical support system.
-     */
+    private String lastDefaultResponse;
+
     public SupportSystem()
     {
         reader = new InputReader();
         responder = new Responder();
         responses = new HashMap<>();
-        
+        lastDefaultResponse = "";
+        fillResponsesMap();
     }
 
-    /**
-     * Start the technical support system. This will print a welcome
-     * message and enter into a dialog with the user, until the user
-     * ends the dialog.
-     */
     public void start()
     {
         boolean finished = false;
 
         printWelcome();
 
-        while(!finished) {
-            String input = reader.getInput();
-            input = input.trim();
-            String lowerInput = input.toLowerCase(); 
-            if(input.equals("bye")) {
+        while (!finished) {
+            // Get input as a set of words
+            HashSet<String> inputWords = reader.getInput();
+
+            // Check if user wants to end the program
+            if (inputWords.contains("bye")) {
                 finished = true;
+                System.out.println("Goodbye!");
+                continue;
             }
-            else {
-                String response = responder.generateResponse();
-                System.out.println(response);
-            }
+
+            // Generate and print a response
+            String response = responder.generateResponses(inputWords, responses, lastDefaultResponse);
+            lastDefaultResponse = response;
+            System.out.println(response);
         }
 
         printGoodbye();
     }
-    /**
-     * Print a welcome message to the screen.
-     */
+
     private void printWelcome()
     {
         System.out.println("Welcome to the DodgySoft Technical Support System.");
@@ -66,34 +59,17 @@ public class SupportSystem
         System.out.println("Please type 'bye' to exit our system.");
     }
 
-    /**
-     * Print a good-bye message to the screen.
-     */
     private void printGoodbye()
     {
         System.out.println("Nice talking to you. Bye...");
     }
+
     private void fillResponsesMap()
     {
         responses.put("slow", "Have you tried restarting your computer?");
         responses.put("crash", "Does it happen when you open a specific program?");
         responses.put("blue", "Please update your drivers.");
-        responses.put("internet", "make sure cables are connected.");
-        responses.put("password", "Try resetting your password");
-    }
-    
-      public String generateResponse(String word)
-    {
-        String response = responses.get(word);
-        if(response != null) {
-            return response;
-        }
-        else {
-            return pickDefaultResponse();
-        }
-    }
-     private String pickDefaultResponse()
-    {
-        return "Sorry, I don’t understand?";
+        responses.put("internet", "Make sure cables are connected.");
+        responses.put("password", "Try resetting your password.");
     }
 }
