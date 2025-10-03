@@ -1,4 +1,4 @@
-
+import java.util.HashMap;
 /**
  * This class implements a technical support system. It is the top level class 
  * in this project. The support system communicates via text input/output 
@@ -16,7 +16,7 @@ public class SupportSystem
 {
     private InputReader reader;
     private Responder responder;
-    
+    private HashMap<String, String> responses;
     /**
      * Creates a technical support system.
      */
@@ -24,6 +24,8 @@ public class SupportSystem
     {
         reader = new InputReader();
         responder = new Responder();
+        responses = new HashMap<>();
+        
     }
 
     /**
@@ -70,5 +72,28 @@ public class SupportSystem
     private void printGoodbye()
     {
         System.out.println("Nice talking to you. Bye...");
+    }
+    private void fillResponsesMap()
+    {
+        responses.put("slow", "Have you tried restarting your computer?");
+        responses.put("crash", "Does it happen when you open a specific program?");
+        responses.put("blue", "Please update your drivers.");
+        responses.put("internet", "make sure cables are connected.");
+        responses.put("password", "Try resetting your password");
+    }
+    
+      public String generateResponse(String word)
+    {
+        String response = responses.get(word);
+        if(response != null) {
+            return response;
+        }
+        else {
+            return pickDefaultResponse();
+        }
+    }
+     private String pickDefaultResponse()
+    {
+        return "Sorry, I don’t understand?";
     }
 }
